@@ -7,24 +7,25 @@ import egg.Entidades.Cuenta;
 public class ServicioCuenta {
     
     public Cuenta crearCuenta(boolean admin, ArrayList<Cuenta> cuentas){
-        Scanner scann = new Scanner(System.in);
-        String usuario;
-        if(admin){
-            do {
-                System.out.println("Ingrese el nombre de usuario");
-            usuario = scann.next();
-            if(usuarioExiste(cuentas, usuario)){
-                System.out.println("El usuario ya existe");
+        try (Scanner scann = new Scanner(System.in)) {
+            String usuario;
+            if(admin){
+                do {
+                    System.out.println("Ingrese el nombre de usuario");
+                usuario = scann.next();
+                if(usuarioExiste(cuentas, usuario)){
+                    System.out.println("El usuario ya existe");
+                }
+                } while (usuarioExiste(cuentas, usuario));
+                System.out.println("Ingrese la contraseña");
+                String password = scann.next();
+                Cuenta cuenta = new Cuenta(usuario, password, false);
+                return cuenta;
             }
-            } while (usuarioExiste(cuentas, usuario));
-            System.out.println("Ingrese la contraseña");
-            String password = scann.next();
-            Cuenta cuenta = new Cuenta(usuario, password, false);
-            return cuenta;
-        }
-        else{
-            System.out.println("No tiene permisos para crear una cuenta");
-            return null;
+            else{
+                System.out.println("No tiene permisos para crear una cuenta");
+                return null;
+            }
         }
     }
     public Cuenta crearAdmin(){
